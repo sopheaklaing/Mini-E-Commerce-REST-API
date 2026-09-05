@@ -51,6 +51,9 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --no-interaction
 
+      - name: Security audit
+        run: composer audit
+        
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --level=max app database routes
 
