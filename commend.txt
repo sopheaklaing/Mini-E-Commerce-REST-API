@@ -1,0 +1,524 @@
+LINUX COMMAND CHEAT SHEET
+=========================
+
+NOTE:
+These commands are mainly for Linux/Ubuntu/WSL.
+Some commands also work in macOS or PowerShell, but behavior can differ.
+
+1. TERMINAL / NAVIGATION
+------------------------
+pwd                 Show current directory
+ls                  List files and directories
+ls -l               Detailed list
+ls -la              List all files including hidden files
+ls -lh              Detailed list with readable sizes
+cd folder           Enter a directory
+cd ..               Go to parent directory
+cd ~                Go to home directory
+cd /                Go to root directory
+cd -                Go to previous directory
+clear               Clear terminal
+history             Show command history
+exit                Exit terminal
+
+2. FILES AND DIRECTORIES
+------------------------
+mkdir folder                Create directory
+mkdir -p a/b/c              Create nested directories
+touch file.txt              Create empty file
+cp file.txt backup.txt      Copy file
+cp -r folder backup         Copy directory
+mv old.txt new.txt          Rename/move file
+mv file.txt folder/         Move file
+rm file.txt                 Delete file
+rm -r folder                Delete directory recursively
+rm -rf folder               Force delete directory (BE CAREFUL)
+rmdir folder                Remove empty directory
+
+3. VIEW / READ FILES
+--------------------
+cat file.txt                Display entire file
+less file.txt               Read file page by page
+more file.txt               Read file page by page
+head file.txt               Show first lines
+head -n 20 file.txt         Show first 20 lines
+tail file.txt               Show last lines
+tail -n 50 file.txt         Show last 50 lines
+tail -f file.log            Follow a log file live
+
+4. CREATE / WRITE FILES
+-----------------------
+nano file.txt               Open/edit file with nano
+vim file.txt                Open/edit file with Vim
+vi file.txt                 Open/edit file with vi
+
+echo "Hello" > file.txt     Write/overwrite file
+echo "Hello" >> file.txt    Append to file
+cat > file.txt              Write multiple lines, Ctrl+D to finish
+cat >> file.txt             Append multiple lines, Ctrl+D to finish
+
+5. NANO SHORTCUTS
+-----------------
+Ctrl + O                    Save
+Enter                       Confirm filename
+Ctrl + X                    Exit
+Ctrl + K                    Cut line
+Ctrl + U                    Paste
+Ctrl + W                    Search
+Ctrl + G                    Help
+
+6. VIM BASIC COMMANDS
+---------------------
+i                           Insert/write mode
+Esc                         Exit insert mode
+:w                          Save
+:q                          Quit
+:wq                         Save and quit
+:q!                         Quit without saving
+dd                          Delete line
+yy                          Copy line
+p                           Paste
+u                           Undo
+
+7. SEARCH
+----------
+find . -name "file.txt"     Find exact filename
+find . -name "*.log"        Find log files
+find /var/www -name "*.php" Find PHP files
+grep "error" file.log       Search text
+grep -i "error" file.log    Case-insensitive search
+grep -r "APP_KEY" .         Search recursively
+grep -n "error" file.log    Show line numbers
+grep -v "error" file.log    Show lines NOT matching
+which php                   Find executable location
+whereis nginx               Find program locations
+
+8. WORD / LINE / BYTE COUNT
+---------------------------
+wc file.txt                 Lines + words + bytes
+wc -l file.txt              Count lines
+wc -w file.txt              Count words
+wc -c file.txt              Count bytes
+
+IMPORTANT:
+The command is "wc", NOT "wcl".
+
+9. TEXT PROCESSING
+------------------
+echo "Hello"                Print text
+printf "Hello\n"            Print formatted text
+sort file.txt               Sort lines
+uniq file.txt               Remove adjacent duplicate lines
+sort file.txt | uniq        Sort and remove duplicates
+cut -d',' -f1 file.csv      Extract column
+awk '{print $1}' file.txt   Print first column
+sed 's/old/new/g' file.txt  Replace text in output
+
+10. PIPES AND REDIRECTION
+-------------------------
+command1 | command2         Send output to another command
+command > file.txt          Overwrite file with output
+command >> file.txt         Append output to file
+command < file.txt          Use file as input
+command 2> error.log        Redirect errors
+command > out.log 2>&1      Redirect output and errors
+
+Examples:
+ps aux | grep nginx
+cat file.log | grep error
+ls -la > files.txt
+echo "hello" >> file.txt
+
+11. PERMISSIONS
+---------------
+ls -l                       Show permissions
+chmod 755 file              Set permissions
+chmod 644 file              Set permissions
+chmod +x script.sh          Make script executable
+chmod -R 755 folder         Change recursively
+chown user:user file        Change owner/group
+chown -R user:user folder   Change recursively
+
+Permission numbers:
+7 = rwx
+6 = rw-
+5 = r-x
+4 = r--
+3 = -wx
+2 = -w-
+1 = --x
+0 = ---
+
+Common:
+chmod 755 script.sh
+chmod 644 file.txt
+chmod +x script.sh
+
+12. USERS
+---------
+whoami                      Show current user
+id                          Show user/group IDs
+who                         Show logged-in users
+users                       Show logged-in users
+sudo command                Run command as administrator
+su username                 Switch user
+sudo adduser developer      Create user
+sudo userdel developer      Delete user
+passwd                      Change password
+
+13. PACKAGE MANAGEMENT (UBUNTU/DEBIAN)
+---------------------------------------
+sudo apt update             Update package list
+sudo apt upgrade            Upgrade packages
+sudo apt install nginx      Install package
+sudo apt remove nginx       Remove package
+sudo apt purge nginx        Remove package + config
+sudo apt autoremove         Remove unused packages
+sudo apt clean              Clean package cache
+apt search nginx            Search packages
+dpkg -l                     List installed packages
+
+14. PROCESSES
+-------------
+ps aux                      Show processes
+ps aux | grep nginx         Find nginx process
+top                         Monitor processes
+htop                        Interactive process monitor
+pgrep nginx                 Find process ID
+kill PID                    Stop process
+kill -9 PID                 Force kill process
+pkill nginx                 Kill by process name
+
+15. SERVICES / SYSTEMD
+----------------------
+sudo systemctl start nginx
+sudo systemctl stop nginx
+sudo systemctl restart nginx
+sudo systemctl reload nginx
+sudo systemctl status nginx
+sudo systemctl enable nginx
+sudo systemctl disable nginx
+
+Examples:
+systemctl status docker
+systemctl status ssh
+systemctl status nginx
+
+16. SYSTEM INFORMATION
+----------------------
+uname -a                    Kernel/system information
+hostname                    Show hostname
+hostname -I                 Show IP address
+uptime                      System uptime/load
+date                        Current date/time
+whoami                      Current user
+lscpu                       CPU information
+lsblk                       Block devices/disks
+lsb_release -a              Ubuntu/Linux distribution info
+
+17. CPU / MEMORY
+---------------
+free -h                     Memory usage
+top                         CPU/process usage
+htop                        CPU/process usage
+uptime                      Load average
+lscpu                       CPU details
+
+18. DISK / STORAGE
+------------------
+df -h                       Disk free space
+du -sh .                    Size of current directory
+du -sh *                    Size of items in directory
+du -h --max-depth=1         Directory sizes
+lsblk                       Disk/block device list
+mount                       Show mounted filesystems
+df -i                       Inode usage
+
+19. NETWORK
+-----------
+ip addr                     Show network interfaces/IPs
+ip a                        Short form of ip addr
+ip route                    Show routing table
+ping google.com             Test connectivity
+curl http://localhost       Make HTTP request
+curl -I https://example.com Show HTTP headers
+wget URL                    Download file
+hostname -I                 Show local IP
+
+20. PORTS
+---------
+sudo ss -tulpn              Show listening ports
+sudo ss -tulpn | grep :8000
+sudo lsof -i :8000          Find process using port 8000
+sudo netstat -tulpn         Older alternative (if installed)
+
+21. DNS
+-------
+nslookup google.com
+dig google.com
+host google.com
+
+22. SSH
+-------
+ssh user@SERVER_IP
+ssh -p 2222 user@SERVER_IP
+ssh-keygen
+ssh-copy-id user@SERVER_IP
+
+Copy files:
+scp file.txt user@SERVER_IP:/home/user/
+scp -r folder user@SERVER_IP:/home/user/
+
+23. ENVIRONMENT VARIABLES
+-------------------------
+env                         Show environment variables
+printenv                    Show environment variables
+echo $PATH                  Show PATH
+echo $HOME                  Show home directory
+export APP_ENV=production   Set variable for current shell
+echo $APP_ENV               Read variable
+
+24. ARCHIVE / COMPRESS
+----------------------
+tar -cvf project.tar project/
+tar -xvf project.tar
+tar -czvf project.tar.gz project/
+tar -xzvf project.tar.gz
+zip -r project.zip project/
+unzip project.zip
+
+25. LOGS
+--------
+journalctl
+journalctl -f
+journalctl -u nginx
+journalctl -u docker
+sudo journalctl -u nginx -f
+
+26. CRON JOBS
+-------------
+crontab -e                  Edit cron jobs
+crontab -l                  List cron jobs
+crontab -r                  Remove cron jobs
+
+Example Laravel:
+* * * * * cd /var/www/app && php artisan schedule:run
+
+27. SHELL SCRIPTS
+----------------
+bash script.sh
+sh script.sh
+./script.sh
+chmod +x script.sh
+
+Basic script:
+#!/bin/bash
+echo "Hello Linux"
+
+28. GIT
+-------
+git init
+git clone URL
+git status
+git add .
+git add file.txt
+git commit -m "message"
+git push
+git pull
+git branch
+git switch main
+git switch -c feature/test
+git merge feature/test
+git log
+git remote -v
+git fetch
+git diff
+
+29. DOCKER
+----------
+docker --version
+docker ps
+docker ps -a
+docker images
+docker pull nginx
+docker build -t myapp .
+docker run nginx
+docker run -d -p 8080:80 nginx
+docker stop CONTAINER
+docker start CONTAINER
+docker restart CONTAINER
+docker rm CONTAINER
+docker rmi IMAGE
+docker logs CONTAINER
+docker logs -f CONTAINER
+docker exec -it CONTAINER bash
+docker exec -it CONTAINER sh
+docker inspect CONTAINER
+docker system df
+docker system prune
+
+30. DOCKER COMPOSE
+------------------
+docker compose up
+docker compose up -d
+docker compose down
+docker compose ps
+docker compose logs
+docker compose logs -f
+docker compose build
+docker compose pull
+docker compose restart
+
+Production example:
+docker compose -f compose.prod.yaml up -d
+docker compose -f compose.prod.yaml pull
+docker compose -f compose.prod.yaml down
+docker compose -f compose.prod.yaml logs -f
+
+31. NGINX
+---------
+sudo nginx -t
+sudo systemctl start nginx
+sudo systemctl stop nginx
+sudo systemctl restart nginx
+sudo systemctl reload nginx
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log
+
+32. LARAVEL ON LINUX
+--------------------
+php artisan serve
+php artisan migrate
+php artisan migrate --force
+php artisan migrate:fresh
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+php artisan optimize
+php artisan test
+php artisan test --coverage
+
+Common permissions:
+sudo chown -R www-data:www-data storage bootstrap/cache
+sudo chmod -R 775 storage bootstrap/cache
+
+Laravel log:
+tail -f storage/logs/laravel.log
+
+33. FILE LINKS
+--------------
+ln -s target link              Create symbolic link
+readlink link                  Show link target
+realpath file                  Show absolute path
+
+34. FILE TYPE / METADATA
+------------------------
+file file.txt                  Show file type
+stat file.txt                  Detailed file metadata
+basename /var/www/app          Get filename/path basename
+dirname /var/www/app           Get parent directory
+
+35. HISTORY / COMMAND HELP
+--------------------------
+history
+history | grep docker
+man ls
+man chmod
+ls --help
+command --help
+which docker
+type docker
+
+36. USEFUL COMBINATIONS
+-----------------------
+ps aux | grep nginx
+sudo ss -tulpn | grep :80
+df -h
+du -sh *
+tail -f /var/log/nginx/error.log
+docker ps
+docker logs -f CONTAINER
+docker compose logs -f
+grep -r "DB_HOST" .
+find . -name "*.log"
+
+37. COMMON DEVOPS SERVER FLOW
+-----------------------------
+ssh user@SERVER_IP
+cd /var/www
+git clone REPOSITORY_URL
+cd project
+docker compose up -d
+docker compose ps
+docker compose logs -f
+sudo nginx -t
+sudo systemctl reload nginx
+curl http://localhost
+
+38. IMPORTANT SAFETY
+--------------------
+Be careful with:
+rm -rf
+sudo rm -rf
+chmod -R
+chown -R
+docker system prune
+kill -9
+sudo systemctl stop
+
+Always check the path before deleting or changing permissions.
+
+39. POWERSHELL VS LINUX
+-----------------------
+If your prompt looks like:
+PS D:\Project>
+
+You are using Windows PowerShell.
+
+PowerShell:
+clear
+cls
+notepad .env
+
+Linux/Ubuntu:
+clear
+nano .env
+vim .env
+
+For Linux practice on Windows, use WSL + Ubuntu.
+
+40. TOP COMMANDS TO MASTER FIRST
+---------------------------------
+pwd
+ls -la
+cd
+mkdir
+touch
+cp
+mv
+rm
+cat
+nano
+tail -f
+grep
+find
+wc
+chmod
+chown
+sudo
+apt
+systemctl
+ps
+kill
+df -h
+du -sh
+free -h
+ip a
+ss -tulpn
+curl
+ssh
+scp
+git
+docker
+docker compose
