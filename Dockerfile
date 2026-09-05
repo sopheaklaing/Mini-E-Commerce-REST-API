@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
-
+LABEL org.opencontainers.image.source="https://github.com/sopheaklaing/Mini-E-Commerce-REST-API"
 # Copy Laravel project
 COPY . .
 

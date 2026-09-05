@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -21,6 +21,7 @@ class ProductController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        /** @var array<string, mixed> $validated */
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -49,6 +50,7 @@ class ProductController extends Controller
         Request $request,
         Product $product
     ): JsonResponse {
+        /** @var array<string, mixed> $validated */
         $validated = $request->validate([
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string'],
