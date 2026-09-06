@@ -1,0 +1,55 @@
+services:
+  app:
+    image: ghcr.io/sopheaklaing/mini-ecommerce-api:${IMAGE_TAG}
+    container_name: mini-ecommerce-prod
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - backend-network
+
+  postgres:
+    image: postgres:17
+    container_name: mini-ecommerce-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: mini-ecommerce-redis-prod
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  backend-network:
+    driver: bridge

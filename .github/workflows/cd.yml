@@ -1,0 +1,82 @@
+name: Laravel CD
+
+on:
+  workflow_run:
+    workflows:
+      - "Laravel CI"
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.2
+
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+
+          script: |
+            set -e
+            echo "Starting deployment"
+
+
+            cd /home/deploy/apps/mini-ecommerce
+
+            echo "Current directory:"
+            pwd
+
+            echo "Pulling latest deployment files..."
+            git pull origin main
+
+            echo "Getting image tag..."
+
+            IMAGE_TAG=${{ github.event.workflow_run.head_sha }}
+
+            export IMAGE_TAG
+
+            echo "IMAGE_TAG=$IMAGE_TAG"
+
+            echo "Docker image:"
+            echo "ghcr.io/sopheaklaing/mini-ecommerce-api:$IMAGE_TAG"
+
+            echo "Pulling Docker image from GHCR"
+
+
+            docker compose -f compose.prod.yaml pull app
+
+
+            echo "Starting containers"
+
+            docker compose -f compose.prod.yaml up -d
+
+            echo "Waiting for application"
+
+            sleep 10
+
+            echo "Running database migrations"
+
+            docker compose -f compose.prod.yaml exec -T app \
+              php artisan migrate --force
+
+         
+            echo "Container status"
+
+            docker compose -f compose.prod.yaml ps
+
+            echo "Health check"
+
+            curl --fail http://localhost:8000/up
+
+            echo "Deployment successful!"
