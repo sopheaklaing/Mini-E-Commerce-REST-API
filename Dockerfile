@@ -16,15 +16,26 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
+
 LABEL org.opencontainers.image.source="https://github.com/sopheaklaing/Mini-E-Commerce-REST-API"
+
 # Copy Laravel project
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --no-interaction --prefer-dist
+RUN composer install \
+    --no-interaction \
+    --prefer-dist \
+    --no-dev \
+    --optimize-autoloader
 
 # Laravel permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data \
+    storage \
+    bootstrap/cache
+
+# Run application as non-root user
+USER www-data
 
 EXPOSE 8000
 
