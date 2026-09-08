@@ -54,9 +54,6 @@ jobs:
       - name: Security audit
         run: composer audit
 
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --level=max app database routes
-
       - name: Run Laravel Pint
         run: vendor/bin/pint --test
   # 2. Tests

@@ -9,12 +9,16 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
+    /**
+     * @param array<string, mixed> $data
+     * @return array{user: User, token: string}
+     */
     public function register(array $data): array
     {
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name' => (string) $data['name'],
+            'email' => (string) $data['email'],
+            'password' => Hash::make((string) $data['password']),
         ]);
 
         $token = Auth::guard('api')->login($user);
@@ -25,9 +29,14 @@ class AuthService
         ];
     }
 
+    /**
+     * @param array<string, string> $credentials
+     */
     public function login(array $credentials): ?string
     {
-        return Auth::guard('api')->attempt($credentials) ?: null;
+        $token = Auth::guard('api')->attempt($credentials);
+
+        return is_string($token) ? $token : null;
     }
 
     public function logout(): void
@@ -37,7 +46,13 @@ class AuthService
 
     public function refresh(): string
     {
-        return JWTAuth::refresh(JWTAuth::getToken());
+        $token = JWTAuth::getToken();
+
+        if ($token === null) {
+            throw new \RuntimeException('Token not provided.');
+        }
+
+        return (string) JWTAuth::refresh($token);
     }
 
     public function me(): ?User
