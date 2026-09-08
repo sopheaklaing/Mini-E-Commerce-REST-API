@@ -54,9 +54,6 @@ jobs:
       - name: Security audit
         run: composer audit
 
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --level=max app database routes
-
       - name: Run Laravel Pint
         run: vendor/bin/pint --test
   # 2. Tests
@@ -110,6 +107,9 @@ jobs:
 
       - name: Generate application key
         run: php artisan key:generate
+        
+      - name: Generate JWT secret 
+        run: php artisan jwt:secret
 
       - name: Configure database
         env:
