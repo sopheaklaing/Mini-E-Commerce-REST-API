@@ -10,7 +10,7 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 class AuthService
 {
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array{user: User, token: string}
      */
     public function register(array $data): array
@@ -30,7 +30,7 @@ class AuthService
     }
 
     /**
-     * @param array<string, string> $credentials
+     * @param  array<string, string>  $credentials
      */
     public function login(array $credentials): ?string
     {
