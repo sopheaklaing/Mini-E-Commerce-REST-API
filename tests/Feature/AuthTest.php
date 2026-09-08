@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -49,7 +50,7 @@ class AuthTest extends TestCase
     {
         User::factory()->create([
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => Hash::make('password123'),
         ]);
 
         $response = $this->postJson('/api/auth/login', [
@@ -76,7 +77,7 @@ class AuthTest extends TestCase
     {
         User::factory()->create([
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => Hash::make('password123'),
         ]);
 
         $response = $this->postJson('/api/auth/login', [
@@ -96,7 +97,7 @@ class AuthTest extends TestCase
     {
         User::factory()->create([
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => Hash::make('password123'),
         ]);
 
         $loginResponse = $this->postJson('/api/auth/login', [
@@ -129,7 +130,7 @@ class AuthTest extends TestCase
     {
         User::factory()->create([
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => Hash::make('password123'),
         ]);
 
         $loginResponse = $this->postJson('/api/auth/login', [
@@ -155,7 +156,7 @@ class AuthTest extends TestCase
     {
         User::factory()->create([
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => Hash::make('password123'),
         ]);
 
         $loginResponse = $this->postJson('/api/auth/login', [
