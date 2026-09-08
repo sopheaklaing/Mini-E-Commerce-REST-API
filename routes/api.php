@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,5 +18,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
     });
     Route::apiResource('products', ProductController::class);
+    Route::apiResource('categories', CategoryController::class);
 
 });
