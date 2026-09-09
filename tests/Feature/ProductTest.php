@@ -122,4 +122,152 @@ class ProductTest extends TestCase
             'id' => $product->id,
         ]);
     }
+
+    public function test_cannot_create_product_without_required_fields(): void
+    {
+        $response = $this->postJson('/api/products', []);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'name',
+                'price',
+                'stock',
+                'category_id',
+            ]);
+    }
+
+    public function test_cannot_create_product_with_invalid_price(): void
+    {
+        $category = Category::factory()->create();
+
+        $response = $this->postJson('/api/products', [
+            'name' => 'MacBook Air M4',
+            'description' => 'Test product',
+            'price' => -100,
+            'stock' => 10,
+            'category_id' => $category->id,
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'price',
+            ]);
+    }
+
+    public function test_cannot_create_product_with_invalid_stock(): void
+    {
+        $category = Category::factory()->create();
+
+        $response = $this->postJson('/api/products', [
+            'name' => 'MacBook Air M4',
+            'description' => 'Test product',
+            'price' => 1000,
+            'stock' => -5,
+            'category_id' => $category->id,
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'stock',
+            ]);
+    }
+
+    public function test_cannot_create_product_with_invalid_category(): void
+    {
+        $response = $this->postJson('/api/products', [
+            'name' => 'MacBook Air M4',
+            'description' => 'Test product',
+            'price' => 1000,
+            'stock' => 10,
+            'category_id' => 999999,
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'category_id',
+            ]);
+    }
+
+    public function test_cannot_update_product_with_invalid_price(): void
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->putJson(
+            "/api/products/{$product->id}",
+            [
+                'price' => -100,
+            ]
+        );
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'price',
+            ]);
+    }
+
+    public function test_cannot_update_product_with_invalid_stock(): void
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->putJson(
+            "/api/products/{$product->id}",
+            [
+                'stock' => -5,
+            ]
+        );
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'stock',
+            ]);
+    }
+
+    public function test_cannot_update_product_with_invalid_category(): void
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->putJson(
+            "/api/products/{$product->id}",
+            [
+                'category_id' => 999999,
+            ]
+        );
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'category_id',
+            ]);
+    }
+
+    public function test_cannot_show_nonexistent_product(): void
+    {
+        $response = $this->getJson('/api/products/999999');
+
+        $response->assertStatus(404);
+    }
+
+    public function test_cannot_update_nonexistent_product(): void
+    {
+        $response = $this->putJson('/api/products/999999', [
+            'name' => 'Updated Product',
+            'price' => 500,
+            'stock' => 10,
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    public function test_cannot_delete_nonexistent_product(): void
+    {
+        $response = $this->deleteJson('/api/products/999999');
+
+        $response->assertStatus(404);
+    }
 }

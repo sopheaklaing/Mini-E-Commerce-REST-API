@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Product;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductIndexRequest;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
@@ -18,9 +19,11 @@ class ProductController extends Controller
     /**
      * Display a listing of products.
      */
-    public function index(): JsonResponse
+    public function index(ProductIndexRequest $request): JsonResponse
     {
-        $products = $this->productService->getAll();
+        $products = $this->productService->getAll(
+            $request->validated()
+        );
 
         return response()->json([
             'success' => true,

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Cart\CartController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Product\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -19,5 +20,14 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);
+    Route::get('cart', [CartController::class, 'index']);
+    Route::post('cart', [CartController::class, 'store']);
+    Route::put(
+        'cart/items/{cartItem}',
+        [CartController::class, 'update']
+
+    );
+    Route::delete('cart/items/{cartItem}', [CartController::class, 'destroy']);
+    Route::delete('cart', [CartController::class, 'clear']);
 
 });

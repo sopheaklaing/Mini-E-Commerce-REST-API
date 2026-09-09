@@ -16,8 +16,6 @@ class ProductIndexRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -27,6 +25,41 @@ class ProductIndexRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
+            ],
+            'category_id' => [
+                'nullable',
+                'interger',
+                'min:0',
+            ],
+            [
+                'main_price' => [
+                    'nullable',
+                    'numeric',
+                    'min:0',
+                ],
+            ],
+            'max_price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                'gte:min_price',
+            ],
+
+            'sort' => [
+                'nullable',
+                'in:name,price,created_at',
+            ],
+
+            'direction' => [
+                'nullable',
+                'in:asc,desc',
+            ],
+
+            'per_page' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:100',
             ],
         ];
     }
