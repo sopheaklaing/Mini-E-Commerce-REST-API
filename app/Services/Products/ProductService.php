@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Services\Products;
+
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 

@@ -27,7 +27,7 @@ class ProductIndexRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
-            ]
+            ],
         ];
     }
 }
