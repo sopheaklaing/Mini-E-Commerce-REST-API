@@ -3,15 +3,27 @@
 namespace App\Http\Controllers\Api\Product;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductIndexRequest;
+use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
+use App\Services\Products\ProductService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(): JsonResponse
+    public function __construct(
+        private readonly ProductService $productService
+    ) {}
+
+    /**
+     * Display a listing of products.
+     */
+    public function index(ProductIndexRequest $request): JsonResponse
     {
-        $products = Product::latest()->paginate(10);
+        $products = $this->productService->getAll(
+            $request->validated()
+        );
 
         return response()->json([
             'success' => true,
@@ -19,17 +31,14 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request): JsonResponse
+    /**
+     * Store a newly created product.
+     */
+    public function store(ProductStoreRequest $request): JsonResponse
     {
-        /** @var array<string, mixed> $validated */
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-        ]);
-
-        $product = Product::create($validated);
+        $product = $this->productService->create(
+            $request->validated()
+        );
 
         return response()->json([
             'success' => true,
@@ -38,38 +47,44 @@ class ProductController extends Controller
         ], 201);
     }
 
+    /**
+     * Display the specified product.
+     */
     public function show(Product $product): JsonResponse
     {
+        $product = $this->productService->find($product);
+
         return response()->json([
             'success' => true,
             'data' => $product,
         ]);
     }
 
+    /**
+     * Update the specified product.
+     */
     public function update(
-        Request $request,
+        ProductUpdateRequest $request,
         Product $product
     ): JsonResponse {
-        /** @var array<string, mixed> $validated */
-        $validated = $request->validate([
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'description' => ['sometimes', 'nullable', 'string'],
-            'price' => ['sometimes', 'required', 'numeric', 'min:0'],
-            'stock' => ['sometimes', 'required', 'integer', 'min:0'],
-        ]);
-
-        $product->update($validated);
+        $product = $this->productService->update(
+            $product,
+            $request->validated()
+        );
 
         return response()->json([
             'success' => true,
             'message' => 'Product updated successfully',
-            'data' => $product->fresh(),
+            'data' => $product,
         ]);
     }
 
+    /**
+     * Remove the specified product.
+     */
     public function destroy(Product $product): JsonResponse
     {
-        $product->delete();
+        $this->productService->delete($product);
 
         return response()->json([
             'success' => true,
