@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,11 +37,14 @@ class ProductTest extends TestCase
 
     public function test_can_create_product(): void
     {
+        $category = Category::factory()->create();
+
         $data = [
             'name' => 'MacBook Air M4',
             'description' => 'Apple MacBook Air with M4 chip',
             'price' => 1199.99,
             'stock' => 15,
+            'category_id' => $category->id,
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -54,6 +58,7 @@ class ProductTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'name' => 'MacBook Air M4',
+            'category_id' => $category->id,
         ]);
     }
 
@@ -61,7 +66,9 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->getJson("/api/products/{$product->id}");
+        $response = $this->getJson(
+            "/api/products/{$product->id}"
+        );
 
         $response
             ->assertStatus(200)
@@ -74,11 +81,14 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->putJson("/api/products/{$product->id}", [
-            'name' => 'Updated Product',
-            'price' => 999.99,
-            'stock' => 20,
-        ]);
+        $response = $this->putJson(
+            "/api/products/{$product->id}",
+            [
+                'name' => 'Updated Product',
+                'price' => 999.99,
+                'stock' => 20,
+            ]
+        );
 
         $response
             ->assertStatus(200)
@@ -97,7 +107,9 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->deleteJson("/api/products/{$product->id}");
+        $response = $this->deleteJson(
+            "/api/products/{$product->id}"
+        );
 
         $response
             ->assertStatus(200)
