@@ -17,7 +17,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'order_number' => 'ORD-' . now()->format('Ymd') . '-' . strtoupper(fake()->bothify('??????')),
+            'order_number' => 'ORD-'.now()->format('Ymd').'-'.strtoupper(fake()->bothify('??????')),
             'status' => 'pending',
             'subtotal' => 100.00,
             'discount' => 0.00,
