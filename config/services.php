@@ -34,5 +34,26 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'bakong' => [
+        'url' => env(
+            'BAKONG_BASE_URL',
+            'https://api-bakong.nbc.gov.kh'
+        ),
+
+        'token' => env('BAKONG_TOKEN'),
+
+        'merchant_account_id' => env(
+            'BAKONG_MERCHANT_ACCOUNT_ID'
+        ),
+    ],
+
+    // 'payment_gateway' => [
+    //     'url' => env(
+    //         'PAYMENT_GATEWAY_URL',
+    //         'https://www.payment-system.dev/api/v1/'
+    //     ),
+
+    //     'token' => env('PAYMENT_GATEWAY_TOKEN'),
+    // ],
 
 ];

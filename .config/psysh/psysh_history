@@ -1,0 +1,264 @@
+config('services.payment_gateway.url');
+config('services.payment_gateway.token') ? 'TOKEN EXISTS' : 'TOKEN MISSING';
+config('services.payment_gateway.token') ? 'TOKEN EXISTS' : 'TOKEN MISSING';
+exit
+$url = rtrim(config('services.payment_gateway.url'), '/');
+$response = Http::acceptJson()
+    ->timeout(15)
+    ->get($url, [
+        'type' => 'generate_qr',
+        'api_token' => config('services.payment_gateway.token'),
+        'amount' => '2.50',
+    ]);
+$response->status();
+$response->body();
+$response->json();
+config('services.bakong.account_id');
+config('services.bakong.merchant_name');
+$payment = App\Models\Payment::find(1);
+$payment->qr_code;
+$qr = App\Models\Payment::find(1)->qr_code;
+$result = KHQR\BakongKHQR::decode($qr);
+$result->data;
+exit
+$result = KHQR\BakongKHQR::decode($qr);
+$qr;
+$qr = 'PASTE_YOUR_KHQR_STRING_HERE';
+exit
+$order = App\Models\Order::latest()->first();
+$order->total;
+$service = app(App\Services\Payment\BakongService::class);
+$data = $service->generateQr($order);
+$data;
+$decoded = KHQR\BakongKHQR::decode($data['qr']);
+$decoded->data['timestamp'];
+floor(microtime(true) * 1000);
+$data = app(App\Services\Payment\BakongService::class)
+    ->generateQr(App\Models\Order::latest()->first());
+$data['qr'];
+$decoded = KHQR\BakongKHQR::decode($data['qr']);
+$decoded->data;
+$data['md5'];
+$data['qr'];
+$data = app(App\Services\Payment\BakongService::class)
+    ->generateQr(App\Models\Order::latest()->first());
+$data['qr'];
+$decoded = KHQR\BakongKHQR::decode($data['qr']);
+$decoded->data;
+config('services.bakong.account_id');
+config('services.bakong.merchant_name');
+config('services.bakong.merchant_city');
+$data = app(App\Services\Payment\BakongService::class)
+    ->generateQr(App\Models\Order::latest()->first());
+$data['md5'];
+app(App\Services\Payment\BakongService::class)
+    ->checkTransaction($data['md5']);
+exit
+$info = new KHQR\Models\IndividualInfo(
+    bakongAccountID: config('services.bakong.account_id'),
+    merchantName: config('services.bakong.merchant_name'),
+    merchantCity: config('services.bakong.merchant_city'),
+    currency: KHQR\Helpers\KHQRData::CURRENCY_USD,
+    amount: 0,
+);
+$result = KHQR\BakongKHQR::generateIndividual($info);
+$result->data['qr'];
+exit
+config('services.payment_gateway.url');
+!empty(config('services.payment_gateway.token'));
+$service = app(\App\Services\PaymentGatewayService::class);
+$result = $service->generateQr(0.01);
+$result;
+$service = app(\App\Services\PaymentGatewayService::class);
+$result = $service->generateQr(0.01);
+$result;
+exit
+!empty(config('services.payment_gateway.token'));
+$service = app(\App\Services\Payment\PaymentGatewayService::class);
+$result = $service->generateQr(0.01);
+$result;
+exit
+$service = app(
+    \App\Services\Payment\PaymentGatewayService::class
+);
+$result = $service->generateQr(0.01);
+$result;
+$check = $service->checkMd5(
+    $result['md5']
+);
+$check;
+exit
+DB::connection()->getPdo();
+exit
+$service = app(\App\Services\Payment\PaymentGatewayService::class);
+$result = $service->checkMd5('7bbf078dba6f5ed47d89ee44a22c423c');
+$result;
+$url = config('services.payment_gateway.url');
+$url;
+$response = Http::timeout(15)
+    ->acceptJson()
+    ->get($url, [
+        'type' => 'check_md5',
+        'api_token' => config('services.payment_gateway.token'),
+        'md5' => '7bbf078dba6f5ed47d89ee44a22c423c',
+    ]);
+$response->status();
+$response->body();
+$newQr = $service->generateQr(0.10);
+$newQr;
+$newQr['md5'];
+$response = Http::timeout(30)
+    ->acceptJson()
+    ->get(config('services.payment_gateway.url'), [
+        'type' => 'generate_qr',
+        'api_token' => config('services.payment_gateway.token'),
+        'amount' => '0.10',
+    ]);
+$response->status();
+$response->body();
+$check = $service->checkMd5('de95331a93aa1719a8207d273f62f0e9');
+$check;
+$response = Http::timeout(30)
+    ->acceptJson()
+    ->get(config('services.payment_gateway.url'), [
+        'type' => 'check_md5',
+        'api_token' => config('services.payment_gateway.token'),
+        'md5' => 'de95331a93aa1719a8207d273f62f0e9',
+    ]);
+$response->status();
+$response->body();
+exit
+$service = app(\App\Services\Payment\PaymentGatewayService::class);
+$check = $service->checkMd5(
+    'de95331a93aa1719a8207d273f62f0e9
+'
+);
+$check;
+$md5 = 'de95331a93aa1719a8207d273f62f0e9';
+strlen($md5);
+$check = $service->checkMd5($md5);
+$check;
+exit
+Schema::getColumnListing('payments');
+exit
+use Illuminate\Support\Facades\Http;
+$response = Http::withToken(config('services.bakong.token'))
+    ->acceptJson()
+    ->post(
+        rtrim(config('services.bakong.url'), '/') . '/v1/check_bakong_account',
+        [
+            'accountId' => config('services.bakong.merchant_account_id'),
+        ]
+    );
+$response->status();
+$response->json();
+exit
+config('services.bakong.url');
+config('services.bakong.merchant_account_id');
+!empty(config('services.bakong.token'));
+$response = Http::withToken(config('services.bakong.token'))
+    ->acceptJson()
+    ->post(
+        rtrim(config('services.bakong.url'), '/') . '/v1/check_bakong_account',
+        [
+            'accountId' => config('services.bakong.merchant_account_id'),
+        ]
+    );
+$response->status();
+$response->json();
+\App\Models\Payment::latest()->first()->md5;
+KHQR\IndividualInfo
+BakongKHQR::generateIndividual()
+exit
+$order = \App\Models\Order::find(26);
+$order->toArray();
+exit
+$result = $this->paymentGatewayService->checkMd5(
+    $payment->md5
+);
+clear
+exit
+$order = App\Models\Order::latest()->first();
+$order = App\Models\Order::latest()->first();
+$order->toArray();
+app(\App\Services\Payment\PaymentGatewayService::class)->debugToken();
+config('services.bakong.token')
+strlen((string) config('services.bakong.token'))
+substr((string) config('services.bakong.token'), 0, 6)
+strlen((string) config('services.bakong.token'))
+substr((string) config('services.bakong.token'))
+$token = config('services.bakong.token');
+
+$md5 = 'YOUR_PAYMENT_MD5';
+
+$response = Http::timeout(15)
+    ->withToken($token)
+    ->acceptJson()
+    ->post(
+        'https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5',
+        [
+            'md5' => $md5,
+        ]
+    );
+
+$response->status();
+$response->json();
+$token = config('services.bakong.token');
+
+$md5 = 'f66705daa559d514f40ce6bfc7ad9773';
+
+$response = Http::timeout(15)
+    ->withToken($token)
+    ->acceptJson()
+    ->post(
+        'https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5',
+        [
+            'md5' => $md5,
+        ]
+    );
+
+$response->status();
+$response = Http::timeout(15)
+    ->withToken($this->token)
+    ->acceptJson()
+    ->post(
+        $this->baseUrl . '/v1/check_transaction_by_md5',
+        [
+            'md5' => $md5,
+        ]
+    );
+$response = Http::timeout(15)
+    ->withOptions([
+        'version' => CURL_HTTP_VERSION_1_1,
+    ])
+    ->withToken($this->token)
+    ->acceptJson()
+    ->post(
+        $this->baseUrl . '/v1/check_transaction_by_md5',
+        [
+            'md5' => $md5,
+        ]
+    );
+clear
+$token = config('services.bakong.token');
+
+$baseUrl = rtrim(config('services.bakong.url'), '/');
+
+$md5 = 'f66705daa559d514f40ce6bfc7ad9773';
+
+$response = Http::timeout(15)
+    ->withOptions([
+        'version' => CURL_HTTP_VERSION_1_1,
+    ])
+    ->withToken($token)
+    ->acceptJson()
+    ->post(
+        $baseUrl . '/v1/check_transaction_by_md5',
+        [
+            'md5' => $md5,
+        ]
+    );
+
+$response->status();
+$response->json();
+exit
