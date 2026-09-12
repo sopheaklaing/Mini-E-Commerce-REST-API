@@ -6,10 +6,20 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev \
     libzip-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libmagickwand-dev \
+    && docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
     && docker-php-ext-install \
-    pdo_pgsql \
-    pgsql \
-    zip \
+        pdo_pgsql \
+        pgsql \
+        zip \
+        gd \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
