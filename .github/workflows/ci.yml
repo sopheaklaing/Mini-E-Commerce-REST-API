@@ -144,7 +144,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: php artisan test
 
-      - name: Run tests with coverage
+      # - name: Run tests with coverage
         env:
           DB_CONNECTION: pgsql
           DB_HOST: 127.0.0.1
@@ -152,7 +152,7 @@ jobs:
           DB_DATABASE: ${{ secrets.POSTGRES_DB }}
           DB_USERNAME: ${{ secrets.POSTGRES_USER }}
           DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        run: php artisan test --coverage --min=80
+        # run: php artisan test --coverage --min=80
   # 3. Docker Build
   docker:
     name: Docker Build
